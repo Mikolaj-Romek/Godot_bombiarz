@@ -303,10 +303,10 @@ animations = [{
 "speed": 3.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_4wnrf"]
-radius = 8.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ogu0m"]
 
 [node name="Area2D" type="Area2D"]
+collision_mask = 3
 script = ExtResource("1_tacdp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -315,7 +315,7 @@ animation = &"Boom_down_end"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_4wnrf")
+shape = SubResource("RectangleShape2D_ogu0m")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.3

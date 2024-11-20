@@ -1,9 +1,11 @@
 extends Node2D
 @onready var map = $TileMap
+var baloon_scene = preload("res://Scenes/Baloon.tscn") 
 
 func _ready() -> void:
 	var door_placed = false
 	var valid_door_positions = []
+	randomize();
 	
 	# First pass: collect valid positions for blocks
 	for i in range(12):
@@ -37,3 +39,36 @@ func _ready() -> void:
 	if valid_door_positions.size() > 0:
 		var door_pos = valid_door_positions[randi() % valid_door_positions.size()]
 		map.set_cell(1, door_pos, 0, Vector2i(11, 3))
+	spawn_baloons()
+
+func spawn_baloons():
+	var free_positions = []
+
+	# Find free positions on the map
+	for i in range(map.get_used_rect().size.y):
+		for j in range(map.get_used_rect().size.x):
+			var pos = Vector2i(j, i)
+			
+			# Check if position is empty on layer 2
+			if map.get_cell_tile_data(1, pos) == null:
+				free_positions.append(pos)
+
+	# Spawn between 5-10 balloons
+	var baloon_count = randi_range(10, 20)
+	print("Spawning", baloon_count, "balloons")
+	for k in range(baloon_count):
+		if free_positions.size() == 0:
+			break
+
+		# Choose a random free position
+		var random_index = randi() % free_positions.size()
+		var baloon_pos = free_positions[random_index]
+		#free_positions.remove(random_index)  # Prevent duplicate positions
+
+		# Spawn the balloon
+		var baloon = baloon_scene.instantiate()
+		var world_pos = map.map_to_local(baloon_pos)  # Convert tile position to world position
+		baloon.position = world_pos
+		add_child(baloon)
+
+		print("Spawned balloon at tile position:", baloon_pos, "world position:", world_pos)
