@@ -4,12 +4,17 @@ const SPEED = 50.0
 var direction: Vector2 = Vector2.ZERO
 var is_alive = true
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var music_player = $AudioStreamPlayer
+var pain_sound = preload("res://Sounds/pain.mp3")
 var change_direction_timer = 0.0
 const DIRECTION_CHANGE_TIME = 3.0  # Change direction every 3 seconds
+var pain_duration
 
 func _ready():
 	add_to_group("player")
 	choose_random_direction()
+	music_player.stream = pain_sound
+	pain_duration = music_player.stream.get_length() - 5
 	
 func _physics_process(delta: float) -> void:
 	if not is_alive:
@@ -64,5 +69,7 @@ func die():
 	velocity = Vector2.ZERO
 
 	sprite.play("die")
+	music_player.seek(pain_duration)
+	music_player.play()
 	sprite.animation_finished.connect(func():
 		queue_free())

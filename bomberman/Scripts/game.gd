@@ -1,6 +1,8 @@
 extends Node2D
 @onready var map = $TileMap
-var baloon_scene = preload("res://Scenes/Baloon.tscn") 
+@onready var music_player = $AudioSreamPlayer
+var baloon_scene = preload("res://Scenes/Baloon.tscn")
+var background_music = preload("res://Sounds/amb.mp3")
 var power_ups = [Vector2i(0,14), Vector2i(4,14), Vector2i(5,14)]
 var power_ups_pos = []
 
