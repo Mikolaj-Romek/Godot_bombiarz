@@ -7,6 +7,8 @@ var max_bombs = 1
 var current_bombs = 0
 var is_alive = true
 var bomb_range = 1
+var can_place_random_bombs = false
+var active_bomb_positions = []  # New array to track bomb positions
 
 signal pickup_power(player_pos: Vector2i)
 
@@ -58,16 +60,71 @@ func _input(event):
 		return
 		
 	if event.is_action_pressed("place_bomb") and current_bombs < max_bombs:
-		var tilemap = get_parent().get_node("TileMap")
-		var tile_pos = tilemap.local_to_map(global_position)
-		var world_pos = tilemap.map_to_local(tile_pos)
+		place_normal_bomb()
+	elif event.is_action_pressed("random_bomb") and current_bombs < max_bombs and can_place_random_bombs:
+		place_random_bomb()
+
+func place_normal_bomb():
+	var tilemap = get_parent().get_node("TileMap")
+	var tile_pos = tilemap.local_to_map(global_position)
+	
+	# Check if there's a brick at this position
+	var tile_data = tilemap.get_cell_tile_data(2, tile_pos)
+	if tile_data != null:
+		return  # Don't place bomb if there's a brick
+		
+	# Check if there's already a bomb at this position
+	if tile_pos in active_bomb_positions:
+		return  # Don't place bomb if there's already one there
+		
+	var world_pos = tilemap.map_to_local(tile_pos)
+	var bomb = bomb_scene.instantiate()
+	bomb.global_position = world_pos
+	bomb.explosion_range = bomb_range
+	
+	# Add cleanup for when bomb is removed
+	bomb.tree_exiting.connect(func(): 
+		current_bombs -= 1
+		active_bomb_positions.erase(tile_pos)
+	)
+	
+	get_parent().add_child(bomb)
+	current_bombs += 1
+	active_bomb_positions.append(tile_pos)
+
+func place_random_bomb():
+	var tilemap = get_parent().get_node("TileMap")
+	var valid_positions = []
+	
+	# Check all positions on the map
+	for i in range(12):
+		for j in range(30):
+			var pos = Vector2i(j, i)
+			var tile_data_1 = tilemap.get_cell_tile_data(1, pos)
+			var tile_data_2 = tilemap.get_cell_tile_data(2, pos)
+			
+			# Add position if both layers are empty and there's no bomb
+			if tile_data_1 == null and tile_data_2 == null and not (pos in active_bomb_positions):
+				valid_positions.append(pos)
+	
+	if valid_positions.size() > 0:
+		# Choose random position from valid positions
+		var random_pos = valid_positions[randi() % valid_positions.size()]
+		var world_pos = tilemap.map_to_local(random_pos)
 		
 		var bomb = bomb_scene.instantiate()
 		bomb.global_position = world_pos
 		bomb.explosion_range = bomb_range
-		bomb.tree_exiting.connect(func(): current_bombs -= 1)
+		
+		# Add cleanup for when bomb is removed
+		bomb.tree_exiting.connect(func(): 
+			current_bombs -= 1
+			active_bomb_positions.erase(random_pos)
+		)
+		
 		get_parent().add_child(bomb)
 		current_bombs += 1
+		active_bomb_positions.append(random_pos)
 
 func die():
 	if not is_alive:
@@ -81,4 +138,3 @@ func die():
 		await animated_sprite.animation_finished
 	
 	queue_free()
-	

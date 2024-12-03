@@ -75,8 +75,17 @@ func spawn_baloons():
 func _on_player_pickup_power(player_pos: Vector2i):
 	if player_pos in power_ups_pos:
 		var atlas_coords = map.get_cell_atlas_coords(1, player_pos)
-		if atlas_coords == Vector2i(0, 14):  # Bomb range power-up
-			var player = get_node("Player")
+		var player = get_node("Player")
+		
+		if atlas_coords == Vector2i(5, 14):  # Bomb range power-up
 			player.bomb_range += 1
+			map.erase_cell(1, player_pos)
+			power_ups_pos.erase(player_pos)
+		elif atlas_coords == Vector2i(0, 14):  # Additional bomb power-up
+			player.max_bombs += 1
+			map.erase_cell(1, player_pos)
+			power_ups_pos.erase(player_pos)
+		elif atlas_coords == Vector2i(4, 14):  # Random bomb ability power-up
+			player.can_place_random_bombs = true
 			map.erase_cell(1, player_pos)
 			power_ups_pos.erase(player_pos)
