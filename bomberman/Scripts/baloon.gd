@@ -12,6 +12,7 @@ var pain_duration
 
 func _ready():
 	add_to_group("player")
+	add_to_group("baloons")
 	choose_random_direction()
 	music_player.stream = pain_sound
 	pain_duration = music_player.stream.get_length() - 5
@@ -63,7 +64,7 @@ func die():
 
 	is_alive = false
 	velocity = Vector2.ZERO
-
+	remove_from_group("baloons")
 	sprite.play("die")
 	music_player.seek(pain_duration)
 	music_player.play()
