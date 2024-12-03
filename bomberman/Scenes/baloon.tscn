@@ -109,3 +109,4 @@ frame_progress = 0.859269
 shape = SubResource("CircleShape2D_8xcps")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+pitch_scale = 2.33
