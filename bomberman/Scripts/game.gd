@@ -1,8 +1,11 @@
 extends Node2D
 @onready var map = $TileMap
 var baloon_scene = preload("res://Scenes/Baloon.tscn") 
+var power_ups = [Vector2i(0,14), Vector2i(4,14), Vector2i(5,14)]
+var power_ups_pos = []
 
 func _ready() -> void:
+	$Player.pickup_power.connect(_on_player_pickup_power)
 	var door_placed = false
 	var valid_door_positions = []
 	randomize();
@@ -29,11 +32,11 @@ func _ready() -> void:
 					map.set_cell(2, pos, 0, Vector2i(4, 3))
 					
 					# 10% chance for power-up under block
-					if randi_range(0, 100) <= 10:
+					if randi_range(0, 100) <= 55:
 						# Randomly select one of the three power-up tiles
-						var power_ups = [Vector2i(0,14), Vector2i(4,14), Vector2i(5,14)]
 						var random_power_up = power_ups[randi() % power_ups.size()]
 						map.set_cell(1, pos, 0, random_power_up)
+						power_ups_pos.append(pos)
 	
 	# Place door under a random destructible block
 	if valid_door_positions.size() > 0:
@@ -55,7 +58,6 @@ func spawn_baloons():
 
 	# Spawn between 5-10 balloons
 	var baloon_count = randi_range(10, 20)
-	print("Spawning", baloon_count, "balloons")
 	for k in range(baloon_count):
 		if free_positions.size() == 0:
 			break
@@ -63,12 +65,18 @@ func spawn_baloons():
 		# Choose a random free position
 		var random_index = randi() % free_positions.size()
 		var baloon_pos = free_positions[random_index]
-		#free_positions.remove(random_index)  # Prevent duplicate positions
 
 		# Spawn the balloon
 		var baloon = baloon_scene.instantiate()
-		var world_pos = map.map_to_local(baloon_pos)  # Convert tile position to world position
+		var world_pos = map.map_to_local(baloon_pos)
 		baloon.position = world_pos
 		add_child(baloon)
 
-		print("Spawned balloon at tile position:", baloon_pos, "world position:", world_pos)
+func _on_player_pickup_power(player_pos: Vector2i):
+	if player_pos in power_ups_pos:
+		var atlas_coords = map.get_cell_atlas_coords(1, player_pos)
+		if atlas_coords == Vector2i(0, 14):  # Bomb range power-up
+			var player = get_node("Player")
+			player.bomb_range += 1
+			map.erase_cell(1, player_pos)
+			power_ups_pos.erase(player_pos)

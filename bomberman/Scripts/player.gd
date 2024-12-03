@@ -6,6 +6,9 @@ var bomb_scene = preload("res://Scenes/bomb.tscn")
 var max_bombs = 1
 var current_bombs = 0
 var is_alive = true
+var bomb_range = 1
+
+signal pickup_power(player_pos: Vector2i)
 
 func _ready():
 	add_to_group("player")
@@ -13,6 +16,11 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	if not is_alive:
 		return
+		
+	# Check for power-ups after movement
+	var tilemap = get_parent().get_node("TileMap")
+	var current_tile_pos = tilemap.local_to_map(global_position)
+	pickup_power.emit(current_tile_pos)
 		
 	# Horizontal movement
 	var direction_x := Input.get_axis("ui_left", "ui_right")
@@ -56,22 +64,21 @@ func _input(event):
 		
 		var bomb = bomb_scene.instantiate()
 		bomb.global_position = world_pos
+		bomb.explosion_range = bomb_range
 		bomb.tree_exiting.connect(func(): current_bombs -= 1)
 		get_parent().add_child(bomb)
 		current_bombs += 1
 
 func die():
-	if not is_alive:  # Prevent multiple death calls
+	if not is_alive:
 		return
 		
 	is_alive = false
-	velocity = Vector2.ZERO  # Stop movement
+	velocity = Vector2.ZERO
 	
-	# Play death animation if it exists
 	if animated_sprite.sprite_frames.has_animation("death"):
 		animated_sprite.play("death")
 		await animated_sprite.animation_finished
-
 	
-	# Remove the player
 	queue_free()
+	

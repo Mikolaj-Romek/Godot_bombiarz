@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://ickvcqt6exob"]
+[gd_scene load_steps=46 format=3 uid="uid://ickvcqt6exob"]
 
 [ext_resource type="Script" path="res://Scripts/bomb.gd" id="1_tacdp"]
 [ext_resource type="Texture2D" uid="uid://byrdng2rq16so" path="res://Sprites/7884_transparent.png" id="2_cp4q8"]
@@ -83,6 +83,22 @@ region = Rect2(0, 176, 16, 16)
 atlas = ExtResource("2_cp4q8")
 region = Rect2(80, 176, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6akpf"]
+atlas = ExtResource("2_cp4q8")
+region = Rect2(48, 96, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmvas"]
+atlas = ExtResource("2_cp4q8")
+region = Rect2(128, 96, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dofn5"]
+atlas = ExtResource("2_cp4q8")
+region = Rect2(48, 176, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s7f5x"]
+atlas = ExtResource("2_cp4q8")
+region = Rect2(128, 176, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_yea8q"]
 atlas = ExtResource("2_cp4q8")
 region = Rect2(64, 96, 16, 16)
@@ -164,7 +180,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Boom",
-"speed": 4.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -181,7 +197,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Boom_down",
-"speed": 4.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -198,7 +214,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Boom_down_end",
-"speed": 4.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -215,7 +231,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Boom_left",
-"speed": 4.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -232,7 +248,24 @@ animations = [{
 }],
 "loop": false,
 "name": &"Boom_left_end",
-"speed": 4.0
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6akpf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmvas")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dofn5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s7f5x")
+}],
+"loop": false,
+"name": &"Boom_right",
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -249,7 +282,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Boom_right_end",
-"speed": 4.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -266,7 +299,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Boom_up",
-"speed": 4.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -283,7 +316,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Boom_up_end",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -300,7 +333,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 3.0
+"speed": 4.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ogu0m"]
@@ -315,7 +348,6 @@ script = ExtResource("1_tacdp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_wfcg7")
-animation = &"Boom_down_end"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
