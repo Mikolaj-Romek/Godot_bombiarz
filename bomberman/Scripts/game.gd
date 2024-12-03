@@ -1,6 +1,8 @@
 extends Node2D
 @onready var map = $TileMap
 var baloon_scene = preload("res://Scenes/Baloon.tscn") 
+var power_ups = [Vector2i(0,14), Vector2i(4,14), Vector2i(5,14)]
+var power_ups_pos = []
 
 func _ready() -> void:
 	var door_placed = false
@@ -29,11 +31,12 @@ func _ready() -> void:
 					map.set_cell(2, pos, 0, Vector2i(4, 3))
 					
 					# 10% chance for power-up under block
-					if randi_range(0, 100) <= 10:
+					if randi_range(0, 100) <= 25:
 						# Randomly select one of the three power-up tiles
-						var power_ups = [Vector2i(0,14), Vector2i(4,14), Vector2i(5,14)]
 						var random_power_up = power_ups[randi() % power_ups.size()]
 						map.set_cell(1, pos, 0, random_power_up)
+						power_ups_pos.append(pos)
+	print(power_ups_pos)
 	
 	# Place door under a random destructible block
 	if valid_door_positions.size() > 0:
@@ -71,4 +74,10 @@ func spawn_baloons():
 		baloon.position = world_pos
 		add_child(baloon)
 
-		print("Spawned balloon at tile position:", baloon_pos, "world position:", world_pos)
+#Picking up powerups
+func _on_player_pickup_power(player_pos: Vector2i):
+	if player_pos in power_ups_pos:
+		var power_up_tile = map.get_cell(1, player_pos)
+		print("powerup detected")
+		if power_up_tile == power_ups[0]:
+			print()
