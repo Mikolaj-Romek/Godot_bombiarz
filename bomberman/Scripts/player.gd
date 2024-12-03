@@ -1,3 +1,4 @@
+# player.gd
 extends CharacterBody2D
 
 const SPEED = 50.0
@@ -10,7 +11,9 @@ var current_bombs = 0
 var is_alive = true
 var bomb_range = 1
 var can_place_random_bombs = false
-var active_bomb_positions = []  # New array to track bomb positions
+
+var active_bomb_positions = []
+var has_won = false
 var death_sound_len
 
 signal pickup_power(player_pos: Vector2i)
@@ -21,7 +24,7 @@ func _ready():
 	death_sound_len = player_sound.stream.get_length() - 15
 
 func _physics_process(delta: float) -> void:
-	if not is_alive:
+	if not is_alive or has_won:
 		return
 		
 	# Check for power-ups after movement
@@ -61,7 +64,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _input(event):
-	if not is_alive:
+	if not is_alive or has_won:
 		return
 		
 	if event.is_action_pressed("place_bomb") and current_bombs < max_bombs:

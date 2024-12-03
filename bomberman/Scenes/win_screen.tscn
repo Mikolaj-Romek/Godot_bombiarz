@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bv1oratmu3bnc"]
+
+[ext_resource type="Script" path="res://Scripts/win_screen.gd" id="1_uogmg"]
+[ext_resource type="Texture2D" uid="uid://d3ok8yorx2wp6" path="res://Sprites/victory.png" id="2_ia3jy"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+layer = 5
+script = ExtResource("1_uogmg")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -69.0
+offset_top = -126.0
+offset_right = 557.0
+offset_bottom = 291.0
+texture = ExtResource("2_ia3jy")
