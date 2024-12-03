@@ -18,7 +18,7 @@ signal pickup_power(player_pos: Vector2i)
 func _ready():
 	add_to_group("player")
 	player_sound.stream = death_sound
-	death_sound_len = player_sound.stream.get_length() - 5
+	death_sound_len = player_sound.stream.get_length() - 15
 
 func _physics_process(delta: float) -> void:
 	if not is_alive:
