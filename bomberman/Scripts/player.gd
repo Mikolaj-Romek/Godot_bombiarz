@@ -7,6 +7,9 @@ var max_bombs = 1
 var current_bombs = 0
 var is_alive = true
 
+func _ready():
+	add_to_group("player")
+
 func _physics_process(delta: float) -> void:
 	if not is_alive:
 		return

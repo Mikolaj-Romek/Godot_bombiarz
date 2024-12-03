@@ -2,12 +2,27 @@ extends Area2D
 
 @onready var timer: Timer = $Timer
 @onready var animated_player: AnimatedSprite2D = $AnimatedSprite2D
+@onready var static_body: StaticBody2D = $StaticBody2D
 var brick_scene = preload("res://Scenes/Brick.tscn")
-var explosion_areas = []  # To track all explosion areas
+var explosion_areas = []  
+var player_that_placed_bomb: Node = null
+var collision_enabled = false
 
 func _ready():
 	timer.start()
 	timer.timeout.connect(_on_timer_timeout)
+	
+	# Get the player who placed the bomb and initially disable collision
+	player_that_placed_bomb = get_tree().get_nodes_in_group("player")[0]
+	static_body.set_collision_layer_value(1, false)
+	
+	# Connect to body signals
+	body_exited.connect(_on_body_exited)
+
+func _on_body_exited(body: Node):
+	if body == player_that_placed_bomb and !collision_enabled:
+		collision_enabled = true
+		static_body.set_collision_layer_value(1, true)
 
 func _physics_process(_delta):
 	# Check for collisions with the center explosion
@@ -18,6 +33,9 @@ func _physics_process(_delta):
 				body.die()
 
 func _on_timer_timeout():
+	# Remove the solid collision when the bomb explodes
+	static_body.queue_free()
+	
 	var tilemap = get_parent().get_node("TileMap")
 	var bomb_pos = tilemap.local_to_map(global_position)
 	

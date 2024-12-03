@@ -60,5 +60,5 @@ size = Vector2(16, 16)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_8v0oy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_pwp23")

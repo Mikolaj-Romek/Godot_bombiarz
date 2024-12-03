@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://ickvcqt6exob"]
+[gd_scene load_steps=42 format=3 uid="uid://ickvcqt6exob"]
 
 [ext_resource type="Script" path="res://Scripts/bomb.gd" id="1_tacdp"]
 [ext_resource type="Texture2D" uid="uid://byrdng2rq16so" path="res://Sprites/7884_transparent.png" id="2_cp4q8"]
@@ -305,7 +305,11 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ogu0m"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_jltfs"]
+radius = 9.0
+
 [node name="Area2D" type="Area2D"]
+collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_tacdp")
 
@@ -319,3 +323,8 @@ shape = SubResource("RectangleShape2D_ogu0m")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.3
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_jltfs")
