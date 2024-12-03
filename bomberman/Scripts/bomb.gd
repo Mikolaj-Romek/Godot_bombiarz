@@ -20,7 +20,10 @@ func _ready():
 	body_exited.connect(_on_body_exited)
 
 func _on_body_exited(body: Node):
-	if body == player_that_placed_bomb and !collision_enabled:
+	if !is_instance_valid(body):
+		return
+		
+	if (body == player_that_placed_bomb or body.is_in_group("player")) and !collision_enabled:
 		collision_enabled = true
 		static_body.set_collision_layer_value(1, true)
 

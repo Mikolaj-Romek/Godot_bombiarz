@@ -1,6 +1,6 @@
 extends Node2D
 @onready var map = $TileMap
-@onready var music_player = $AudioSreamPlayer
+@onready var music_player = $AudioStreamPlayer
 var baloon_scene = preload("res://Scenes/Baloon.tscn")
 var background_music = preload("res://Sounds/amb.mp3")
 var power_ups = [Vector2i(0,14), Vector2i(4,14), Vector2i(5,14)]
@@ -34,7 +34,7 @@ func _ready() -> void:
 					map.set_cell(2, pos, 0, Vector2i(4, 3))
 					
 					# 10% chance for power-up under block
-					if randi_range(0, 100) <= 55:
+					if randi_range(0, 100) <= 100:
 						# Randomly select one of the three power-up tiles
 						var random_power_up = power_ups[randi() % power_ups.size()]
 						map.set_cell(1, pos, 0, random_power_up)
