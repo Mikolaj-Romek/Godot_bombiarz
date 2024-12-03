@@ -3,19 +3,25 @@ extends CharacterBody2D
 
 const SPEED = 50.0
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var player_sound = $AudioStreamPlayer
 var bomb_scene = preload("res://Scenes/bomb.tscn")
+var death_sound = preload("res://Sounds/pain.mp3")
 var max_bombs = 1
 var current_bombs = 0
 var is_alive = true
 var bomb_range = 1
 var can_place_random_bombs = false
+
 var active_bomb_positions = []
 var has_won = false
+var death_sound_len
 
 signal pickup_power(player_pos: Vector2i)
 
 func _ready():
 	add_to_group("player")
+	player_sound.stream = death_sound
+	death_sound_len = player_sound.stream.get_length() - 15
 
 func _physics_process(delta: float) -> void:
 	if not is_alive or has_won:
@@ -136,6 +142,8 @@ func die():
 	velocity = Vector2.ZERO
 	
 	if animated_sprite.sprite_frames.has_animation("death"):
+		player_sound.pitch_scale = 0.8
+		player_sound.play()
 		animated_sprite.play("death")
 		await animated_sprite.animation_finished
 	
