@@ -3,6 +3,7 @@ extends Area2D
 @onready var timer: Timer = $Timer
 @onready var animated_player: AnimatedSprite2D = $AnimatedSprite2D
 @onready var static_body: StaticBody2D = $StaticBody2D
+@onready var music_player = $AudioStreamPlayer
 var brick_scene = preload("res://Scenes/Brick.tscn")
 var explosion_areas = []
 var player_that_placed_bomb: Node = null
@@ -36,6 +37,7 @@ func _on_timer_timeout():
 	var tilemap = get_parent().get_node("TileMap")
 	var bomb_pos = tilemap.local_to_map(global_position)
 	
+	music_player.play()
 	animated_player.play("Boom")
 	
 	var directions = {

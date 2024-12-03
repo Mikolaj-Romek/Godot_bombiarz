@@ -1,7 +1,8 @@
-[gd_scene load_steps=46 format=3 uid="uid://ickvcqt6exob"]
+[gd_scene load_steps=47 format=3 uid="uid://ickvcqt6exob"]
 
 [ext_resource type="Script" path="res://Scripts/bomb.gd" id="1_tacdp"]
 [ext_resource type="Texture2D" uid="uid://byrdng2rq16so" path="res://Sprites/7884_transparent.png" id="2_cp4q8"]
+[ext_resource type="AudioStream" uid="uid://umnrlxxd2p57" path="res://Sounds/exp.mp3" id="3_xjd3h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wmh2j"]
 atlas = ExtResource("2_cp4q8")
@@ -360,3 +361,6 @@ wait_time = 2.3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("CircleShape2D_jltfs")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_xjd3h")
