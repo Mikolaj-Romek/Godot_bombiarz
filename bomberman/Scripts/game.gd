@@ -30,7 +30,7 @@ func _ready() -> void:
 			# Only place block if position is empty
 			if existing_tile == null:
 				var rand_val = randi_range(0, 100)
-				if rand_val <= 1:
+				if rand_val <= 20:
 					# Store valid positions for door
 					valid_door_positions.append(pos)
 					# Place destructible block on layer 2
@@ -89,7 +89,7 @@ func spawn_baloons():
 				free_positions.append(pos)
 
 	# Spawn between 5-6 balloons
-	var baloon_count = randi_range(0,0)
+	var baloon_count = randi_range(5,15)
 	for k in range(baloon_count):
 		if free_positions.size() == 0:
 			break
