@@ -91,3 +91,7 @@ func _on_player_pickup_power(player_pos: Vector2i):
 			player.can_place_random_bombs = true
 			map.erase_cell(1, player_pos)
 			power_ups_pos.erase(player_pos)
+			
+func _input(event):
+	if event.is_action_pressed("Escape"):
+		get_tree().quit()

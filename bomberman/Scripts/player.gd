@@ -143,5 +143,6 @@ func die():
 		player_sound.play()
 		animated_sprite.play("death")
 		await animated_sprite.animation_finished
+		get_tree().reload_current_scene()
 	
 	queue_free()

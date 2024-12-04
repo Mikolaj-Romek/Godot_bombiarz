@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 50.0
+var SPEED = 50.0
 var direction: Vector2 = Vector2.ZERO
 var is_alive = true
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -37,7 +37,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		move_and_slide()
 
-	if sprite.animation != "default" and is_alive:
+	if is_alive:
 		sprite.play("default")
 
 func choose_random_direction():
