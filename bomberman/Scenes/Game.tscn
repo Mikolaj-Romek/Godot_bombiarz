@@ -358,6 +358,14 @@ layer_2/tile_data = PackedInt32Array(0, 196608, 3, 1, 196608, 3, 2, 196608, 3, 3
 [node name="Player" parent="." instance=ExtResource("2_xp8i5")]
 position = Vector2(24, 24)
 
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.7, 1.7)
+limit_left = 0
+limit_top = 0
+limit_right = 496
+limit_bottom = 208
+editor_draw_limits = true
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_f6j18")
 autoplay = true

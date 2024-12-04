@@ -1,17 +1,17 @@
 extends CharacterBody2D
-
-var SPEED = 50.0
+const SPEED = 30.0
 var direction: Vector2 = Vector2.ZERO
 var is_alive = true
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var music_player = $AudioStreamPlayer
+@onready var area_2d = $Area2D  # Add this line
 var pain_sound = preload("res://Sounds/pain.mp3")
 var change_direction_timer = 0.0
 const DIRECTION_CHANGE_TIME = 3.0
 var pain_duration
 
 func _ready():
-	add_to_group("player")
+	add_to_group("baloons")
 	choose_random_direction()
 	music_player.stream = pain_sound
 	pain_duration = music_player.stream.get_length() - 5
@@ -26,6 +26,12 @@ func _physics_process(delta: float) -> void:
 		change_direction_timer = 0.0
 
 	velocity = direction * SPEED
+	
+	# Check for player collision using overlap
+	var overlapping_bodies = area_2d.get_overlapping_bodies()
+	for body in overlapping_bodies:
+		if body.is_in_group("player"):
+			body.die()
 	
 	var collision = move_and_collide(velocity * delta, true)
 	if collision:
@@ -63,7 +69,7 @@ func die():
 
 	is_alive = false
 	velocity = Vector2.ZERO
-
+	remove_from_group("baloons")
 	sprite.play("die")
 	music_player.seek(pain_duration)
 	music_player.play()

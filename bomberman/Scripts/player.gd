@@ -1,8 +1,10 @@
+# player.gd
 extends CharacterBody2D
 
 const SPEED = 50.0
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var player_sound = $AudioStreamPlayer
+@onready var area_2d: Area2D = $Area2D
 var bomb_scene = preload("res://Scenes/bomb.tscn")
 var death_sound = preload("res://Sounds/pain.mp3")
 var max_bombs = 1
@@ -10,7 +12,9 @@ var current_bombs = 0
 var is_alive = true
 var bomb_range = 1
 var can_place_random_bombs = false
-var active_bomb_positions = []  # New array to track bomb positions
+
+var active_bomb_positions = []
+var has_won = false
 var death_sound_len
 
 signal pickup_power(player_pos: Vector2i)
@@ -20,8 +24,15 @@ func _ready():
 	player_sound.stream = death_sound
 	death_sound_len = player_sound.stream.get_length() - 15
 
+	area_2d.area_entered.connect(_on_area_entered)
+
+
+func _on_area_entered(area: Area2D):
+	if area.get_parent().is_in_group("baloons"):
+		die()
+
 func _physics_process(delta: float) -> void:
-	if not is_alive:
+	if not is_alive or has_won:
 		return
 		
 	# Check for power-ups after movement
@@ -61,7 +72,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _input(event):
-	if not is_alive:
+	if not is_alive or has_won:
 		return
 		
 	if event.is_action_pressed("place_bomb") and current_bombs < max_bombs:
@@ -131,6 +142,10 @@ func place_random_bomb():
 		current_bombs += 1
 		active_bomb_positions.append(random_pos)
 
+func _on_body_entered(body: Node2D):
+	if body.is_in_group("baloons"):
+		die()
+		
 func die():
 	if not is_alive:
 		return
