@@ -30,7 +30,7 @@ func _ready() -> void:
 			# Only place block if position is empty
 			if existing_tile == null:
 				var rand_val = randi_range(0, 100)
-				if rand_val <= 20:
+				if rand_val <= 15:
 					# Store valid positions for door
 					valid_door_positions.append(pos)
 					# Place destructible block on layer 2
@@ -59,8 +59,7 @@ func check_win_condition():
 		
 	var player_pos = map.local_to_map(player.global_position)
 	if player_pos == door_position:
-		if are_all_baloons_defeated():
-			show_win_screen()
+		get_tree().reload_current_scene()
 
 func show_win_screen():
 	var win_screen = win_screen_scene.instantiate()
@@ -89,7 +88,7 @@ func spawn_baloons():
 				free_positions.append(pos)
 
 	# Spawn between 5-6 balloons
-	var baloon_count = randi_range(5,15)
+	var baloon_count = randi_range(5, 10)
 	for k in range(baloon_count):
 		if free_positions.size() == 0:
 			break
