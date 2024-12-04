@@ -4,6 +4,7 @@ extends CharacterBody2D
 const SPEED = 50.0
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var player_sound = $AudioStreamPlayer
+@onready var area_2d: Area2D = $Area2D
 var bomb_scene = preload("res://Scenes/bomb.tscn")
 var death_sound = preload("res://Sounds/pain.mp3")
 var max_bombs = 1
@@ -22,6 +23,13 @@ func _ready():
 	add_to_group("player")
 	player_sound.stream = death_sound
 	death_sound_len = player_sound.stream.get_length() - 15
+
+	area_2d.area_entered.connect(_on_area_entered)
+
+
+func _on_area_entered(area: Area2D):
+	if area.get_parent().is_in_group("baloons"):
+		die()
 
 func _physics_process(delta: float) -> void:
 	if not is_alive or has_won:
@@ -134,6 +142,10 @@ func place_random_bomb():
 		current_bombs += 1
 		active_bomb_positions.append(random_pos)
 
+func _on_body_entered(body: Node2D):
+	if body.is_in_group("baloons"):
+		die()
+		
 func die():
 	if not is_alive:
 		return

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b2hjliyh3ijdb"]
+[gd_scene load_steps=17 format=3 uid="uid://b2hjliyh3ijdb"]
 
 [ext_resource type="Script" path="res://Scripts/baloon.gd" id="1_nw8a4"]
 [ext_resource type="Texture2D" uid="uid://byrdng2rq16so" path="res://Sprites/7884_transparent.png" id="1_ylal8"]
@@ -96,6 +96,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_8xcps"]
 radius = 7.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_egr1h"]
+radius = 7.0
+
 [node name="CharacterBody2D" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_nw8a4")
@@ -110,3 +113,10 @@ shape = SubResource("CircleShape2D_8xcps")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 pitch_scale = 2.33
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_egr1h")
