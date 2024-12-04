@@ -1,5 +1,4 @@
 extends CharacterBody2D
-
 const SPEED = 30.0
 var direction: Vector2 = Vector2.ZERO
 var is_alive = true
@@ -44,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		move_and_slide()
 
-	if sprite.animation != "default" and is_alive:
+	if is_alive:
 		sprite.play("default")
 
 func choose_random_direction():
